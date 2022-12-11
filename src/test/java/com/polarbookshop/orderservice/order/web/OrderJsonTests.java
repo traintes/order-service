@@ -20,7 +20,19 @@ public class OrderJsonTests {
 	
 	@Test
 	void testSerialize() throws Exception {
-		Order order = new Order(394L, "1234567890", "Book Name", 9.90, 1, OrderStatus.ACCEPTED, Instant.now(), Instant.now(), 21);
+		Order order = new Order(
+			394L,
+			"1234567890",
+			"Book Name",
+			9.90,
+			1,
+			OrderStatus.ACCEPTED,
+			Instant.now(),
+			Instant.now(),
+			"jon",
+			"marlena",
+			21
+		);
 		JsonContent<Order> jsonContent = json.write(order);
 		assertThat(jsonContent).extractingJsonPathNumberValue("@.id").isEqualTo(order.id().intValue());
 		assertThat(jsonContent).extractingJsonPathStringValue("@.bookIsbn").isEqualTo(order.bookIsbn());
@@ -30,6 +42,8 @@ public class OrderJsonTests {
 		assertThat(jsonContent).extractingJsonPathStringValue("@.status").isEqualTo(order.status().toString());
 		assertThat(jsonContent).extractingJsonPathStringValue("@.createdDate").isEqualTo(order.createdDate().toString());
 		assertThat(jsonContent).extractingJsonPathStringValue("@.lastModifiedDate").isEqualTo(order.lastModifiedDate().toString());
+		assertThat(jsonContent).extractingJsonPathStringValue("@.createdBy").isEqualTo(order.createdBy());
+		assertThat(jsonContent).extractingJsonPathStringValue("@.lastModifiedBy").isEqualTo(order.lastModifiedBy());
 		assertThat(jsonContent).extractingJsonPathNumberValue("@.version").isEqualTo(order.version());
 	}
 }
